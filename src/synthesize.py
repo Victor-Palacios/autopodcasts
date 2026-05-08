@@ -6,8 +6,9 @@ Approach:
   - Concatenate with ffmpeg into one MP3
   - Insert ~250ms silence between turns for natural pacing
 
-Voice choices below are placeholders — the Groq voice catalog updates often.
-Override with HOST_VOICE / EXPERT_VOICE env vars if you want to swap.
+Voice choices below are sensible defaults — the Groq voice catalog updates often.
+Override with HOST_VOICE / EXPERT_VOICE env vars if you want to swap. Orpheus
+voices: autumn, diana, hannah, austin, daniel, troy.
 
 Note on rate limits: Groq's free tier rate-limits TTS. For a 20-min episode
 (~80 lines), you may hit transient limits. We retry with exponential backoff.
@@ -23,9 +24,9 @@ from pathlib import Path
 from groq import Groq
 
 
-GROQ_TTS_MODEL = os.environ.get("GROQ_TTS_MODEL", "playai-tts")
-HOST_VOICE = os.environ.get("HOST_VOICE", "Celeste-PlayAI")
-EXPERT_VOICE = os.environ.get("EXPERT_VOICE", "Fritz-PlayAI")
+GROQ_TTS_MODEL = os.environ.get("GROQ_TTS_MODEL", "canopylabs/orpheus-v1-english")
+HOST_VOICE = os.environ.get("HOST_VOICE", "hannah")
+EXPERT_VOICE = os.environ.get("EXPERT_VOICE", "daniel")
 SILENCE_BETWEEN_TURNS_MS = 250
 
 

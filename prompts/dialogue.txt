@@ -14,7 +14,9 @@ HOST: <line>
 
 No stage directions. No section headers. No markdown. No "[laughs]" or "[pause]". Just speaker labels and lines.
 
-Each line should be one to four sentences. Long monologues are boring — break up explanations with HOST interjections, clarifying questions, or "let me make sure I understand" moments. Aim for an average of 2-3 sentences per turn.
+HARD CONSTRAINT: every single line (the text after "HOST:" or "EXPERT:") MUST be 200 characters or fewer. This is a TTS engine limit, not a style suggestion — longer lines will be rejected. Count generously and stay safely under. If an idea won't fit, split it across two consecutive turns from the same speaker, or break it with a HOST interjection.
+
+Each line should be one or two short sentences. Long monologues are boring anyway — break up explanations with HOST interjections, clarifying questions, or "let me make sure I understand" moments. To hit the 20-25 minute target, use MORE turns, not longer turns: aim for roughly 100-160 turns total.
 
 Structure (don't announce these — just follow the flow):
 1. Cold open: HOST states what the paper is and why anyone should care. ~1 minute.

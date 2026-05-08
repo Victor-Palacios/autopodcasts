@@ -48,7 +48,7 @@ The two-pass LLM approach (outline → dialogue) is deliberate. A one-shot promp
 
 - **The dialogue prompt (`prompts/dialogue.txt`) is where most of the quality lives.** If episodes feel shallow, surface-level, or sycophantic, edit this file. Push back on filler phrases. Demand specificity.
 - **Pick a stronger model** by setting `OUTLINE_MODEL` and `SCRIPT_MODEL` env vars in the workflow. Browse [build.nvidia.com/models](https://build.nvidia.com/models) for current options.
-- **Voice swap**: set `HOST_VOICE` and `EXPERT_VOICE` to any voice from Groq's PlayAI catalog. Sample them in the Groq console first.
+- **Voice swap**: set `HOST_VOICE` and `EXPERT_VOICE` to any voice from Groq's Orpheus catalog (`autumn`, `diana`, `hannah`, `austin`, `daniel`, `troy`). Sample them in the Groq console first. Orpheus also accepts inline vocal-direction tags like `[cheerful]` or `[whisper]` inside the dialogue text if you want to push expressiveness.
 
 ## Costs and limits
 
