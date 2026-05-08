@@ -77,5 +77,3 @@ python -m src.outline /tmp/extracted.txt > /tmp/outline.json
 python -m src.scriptwriter /tmp/outline.json > episodes/foo.script.txt
 python -m src.synthesize episodes/foo.script.txt episodes/foo.mp3
 ```
-
-Useful for iterating on prompts without burning Action minutes.
