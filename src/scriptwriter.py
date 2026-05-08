@@ -18,7 +18,7 @@ from openai import OpenAI
 
 
 NVIDIA_BASE_URL = "https://integrate.api.nvidia.com/v1"
-MODEL = os.environ.get("SCRIPT_MODEL", "deepseek-ai/deepseek-v3.1-terminus")
+MODEL = os.environ.get("SCRIPT_MODEL", "deepseek-ai/deepseek-v4-flash")
 
 
 def load_prompt() -> str:
