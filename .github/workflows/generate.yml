@@ -1,0 +1,103 @@
+name: Generate Podcast Episode
+
+on:
+  workflow_dispatch:
+    inputs:
+      pdf_path:
+        description: 'Path to PDF in the repo (e.g. papers/attention.pdf)'
+        required: true
+        type: string
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write  # needed to commit the MP3 back
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Verify PDF exists
+        run: |
+          if [ ! -f "${{ inputs.pdf_path }}" ]; then
+            echo "::error::PDF not found at ${{ inputs.pdf_path }}"
+            exit 1
+          fi
+
+      - name: Compute slug
+        id: slug
+        run: |
+          # turn papers/foo-bar.pdf into foo-bar
+          BASENAME=$(basename "${{ inputs.pdf_path }}" .pdf)
+          SLUG=$(echo "$BASENAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | sed 's/^-//;s/-$//')
+          echo "slug=$SLUG" >> "$GITHUB_OUTPUT"
+          echo "Slug: $SLUG"
+
+      - name: Extract PDF text
+        run: |
+          mkdir -p build
+          python -m src.extract "${{ inputs.pdf_path }}" > "build/${{ steps.slug.outputs.slug }}.extracted.txt"
+          head -5 "build/${{ steps.slug.outputs.slug }}.extracted.txt"
+
+      - name: Generate outline
+        env:
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+        run: |
+          python -m src.outline "build/${{ steps.slug.outputs.slug }}.extracted.txt" \
+            > "build/${{ steps.slug.outputs.slug }}.outline.json"
+
+      - name: Generate dialogue script
+        env:
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+        run: |
+          python -m src.scriptwriter "build/${{ steps.slug.outputs.slug }}.outline.json" \
+            > "episodes/${{ steps.slug.outputs.slug }}.script.txt"
+
+      - name: Synthesize audio
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          python -m src.synthesize \
+            "episodes/${{ steps.slug.outputs.slug }}.script.txt" \
+            "episodes/${{ steps.slug.outputs.slug }}.mp3"
+
+      - name: Write metadata
+        run: |
+          TITLE=$(grep '^TITLE: ' "build/${{ steps.slug.outputs.slug }}.extracted.txt" | sed 's/^TITLE: //')
+          python -m src.publish \
+            "episodes/${{ steps.slug.outputs.slug }}.mp3" \
+            "$TITLE" \
+            "${{ inputs.pdf_path }}" \
+            "episodes/${{ steps.slug.outputs.slug }}.script.txt"
+
+      - name: Upload episode as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: episode-${{ steps.slug.outputs.slug }}
+          path: episodes/${{ steps.slug.outputs.slug }}.*
+
+      - name: Commit episode back to repo
+        run: |
+          git config user.name "paper-podcast-bot"
+          git config user.email "paper-podcast-bot@users.noreply.github.com"
+          git add episodes/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Add episode: ${{ steps.slug.outputs.slug }}"
+            git push
+          fi

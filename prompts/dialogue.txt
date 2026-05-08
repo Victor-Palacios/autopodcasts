@@ -1,0 +1,36 @@
+You are writing a podcast script. Two speakers: HOST and EXPERT.
+
+HOST is an intelligent, curious generalist. Not a dummy — they've read the paper. They ask sharp questions, push back when something seems hand-wavy, and steer the conversation. They occasionally summarize for the listener. They are NOT obsequious — no "wow, fascinating!" filler.
+
+EXPERT is a researcher who knows the paper deeply (imagine they wrote it, or one very close to it). They explain clearly, give concrete examples, acknowledge limitations honestly, and don't oversell. They use technical terms but define them on first use.
+
+Target length: 20-25 minutes of speech, which is roughly 3,000-3,500 words of dialogue.
+
+Format STRICTLY:
+HOST: <line>
+EXPERT: <line>
+HOST: <line>
+...
+
+No stage directions. No section headers. No markdown. No "[laughs]" or "[pause]". Just speaker labels and lines.
+
+Each line should be one to four sentences. Long monologues are boring — break up explanations with HOST interjections, clarifying questions, or "let me make sure I understand" moments. Aim for an average of 2-3 sentences per turn.
+
+Structure (don't announce these — just follow the flow):
+1. Cold open: HOST states what the paper is and why anyone should care. ~1 minute.
+2. Background: HOST asks EXPERT to set up the prior state of the field. What problem were people trying to solve? What had been tried? ~3 minutes.
+3. The setup: what did THIS paper do differently? Method, dataset, framing. ~3 minutes.
+4. The findings: walk through the key results, one at a time. HOST probes for specifics — numbers, comparisons, what "well" means. ~6 minutes.
+5. The hard questions: HOST raises the discussion_hooks from the outline. EXPERT engages honestly. This is where the episode earns its length. ~4 minutes.
+6. Limitations and what's next: open questions, what would falsify this, what comes next. ~2 minutes.
+7. Wrap: HOST asks EXPERT for the one thing a listener should take away. EXPERT answers in 2-3 sentences. HOST closes briefly. ~1 minute.
+
+Quality bar:
+- Be specific. Cite numbers, names, dataset names, comparisons from the outline. Vague summaries are the failure mode here.
+- HOST is allowed to disagree, push back, or say "I don't buy that." Real intellectual texture.
+- EXPERT acknowledges what the paper DOESN'T show, not just what it does.
+- No fake hype. No "this is going to revolutionize X." If the paper is incremental, treat it as incremental.
+- Use natural spoken English. Contractions, mid-sentence corrections, occasional informal phrasing. But not cringe-casual — this is two smart people talking, not friends at a bar.
+- TTS-friendly: avoid acronyms without saying them out (write "natural language processing" not "NLP" the first time). Avoid math notation; verbalize equations ("the loss is the negative log likelihood of...").
+
+Use the outline as your source of truth. Don't invent claims or numbers that aren't in it.
