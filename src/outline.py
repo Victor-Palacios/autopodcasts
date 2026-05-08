@@ -17,7 +17,7 @@ from openai import OpenAI
 
 NVIDIA_BASE_URL = "https://integrate.api.nvidia.com/v1"
 # Long-context, strong reasoning. Swap if NVIDIA's catalog changes — see build.nvidia.com/models.
-MODEL = os.environ.get("OUTLINE_MODEL", "deepseek-ai/deepseek-v4-flash")
+MODEL = os.environ.get("OUTLINE_MODEL", "deepseek-ai/deepseek-v4-pro")
 
 
 def load_prompt() -> str:
